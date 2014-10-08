@@ -1,0 +1,11 @@
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+body { margin: 0; padding: 5px; }
+#container { display: table; width: 100%; }
+#data { display: table-cell; min-width: 320px; outline: 1px solid #ccc; margin: 0; padding: 5px; }
+#logs { display: table-cell; min-width: 420px; list-style-type: none; margin: 0; padding: 5px; }
+#logs li { padding: 5px; outline: 1px solid #eee; }

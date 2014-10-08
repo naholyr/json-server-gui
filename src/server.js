@@ -19,8 +19,9 @@ app.low.path = path.resolve("db.json");
 app.low.db = require("./db.json");
 
 var server = http.createServer(app);
+app.port = process.env.PORT || 26080;
 
-server.listen(26080);
+server.listen(app.port);
 
 server.on("listening", function () {
   console.log(this.address());

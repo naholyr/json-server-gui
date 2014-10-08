@@ -1,32 +1,16 @@
 {
-    "name": "json-server-gui",
-    "version": "1.0.0",
-    "main": "index.html",
-    "description": "JSON Server",
-    "dependencies": {
-        "json-server": "0.4.2"
-    },
-    "nodejs": true,
-    "single-instance": true,
-    "webkit": {
-        "page-cache": false,
-        "java": false,
-        "plugin": false
-    },
-    "window": {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "JSON Server",
-        "always-on-top": false,
-        "frame": true,
-        "height": 480,
-        "visible": true,
-        "as_desktop": false,
-        "min_width": 640,
-        "width": 640,
-        "toolbar": false
-    },
-    "scripts": {
-      "fix-nwbuild": "cp ./node_modules/.bin/nwbuild ./node_modules/.bin/nwbuild.win && tr -d '\\015' <./node_modules/.bin/nwbuild.win >./node_modules/.bin/nwbuild"
-    }
+  "name": "json-server-gui-builder",
+  "version": "1.0.0",
+  "description": "JSON Server GUI - builder",
+  "devDependencies": {
+    "node-webkit-builder": "^0.1.3"
+  },
+  "scripts": {
+    "fix-nwbuild": "cp ./node_modules/.bin/nwbuild ./node_modules/.bin/nwbuild.win && tr -d '\\015' < ./node_modules/.bin/nwbuild.win > ./node_modules/.bin/nwbuild",
+    "build-win": "nwbuild -p win src",
+    "build-linux32": "nwbuild -p linux32 src",
+    "build-linux64": "nwbuild -p linux64 src",
+    "build-osx": "nwbuild -p osx src",
+    "build-all": "nwbuild -p linux64,linux32,win,osx src"
+  }
 }

@@ -35,5 +35,5 @@ process.on("data-update", function () {
 // Logs
 var elLogs = document.getElementById("logs");
 process.on("request", function (method, url, body) {
-  elLogs.innerHTML = "<li><strong>" + method + " " + url + "</strong> ← <code>" + JSON.stringify(body) + "</code></li>" + elLogs.innerHTML;
+  elLogs.innerHTML += "<li><strong>" + method + " " + url + "</strong> ← <code>" + JSON.stringify(body) + "</code></li>";
 });

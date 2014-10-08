@@ -1,0 +1,28 @@
+{
+    "name": "json-server-gui",
+    "version": "1.0.0",
+    "description": "JSON Server",
+    "main": "index.html",
+    "nodejs": true,
+    "single-instance": true,
+    "window": {
+        "title": "JSON Server",
+        "fullscreen": false,
+        "resizable": true,
+        "always-on-top": false,
+        "frame": true,
+        "height": 600,
+        "min_width": 800,
+        "show_in_taskbar": true,
+        "width": 800,
+        "toolbar": false
+    },
+    "dependencies": {
+        "json-server": "0.4.2"
+    },
+    "webkit": {
+        "page-cache": false,
+        "java": false,
+        "plugin": false
+    }
+}
