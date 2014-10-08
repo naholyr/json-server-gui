@@ -1,3 +1,8 @@
+var http = require("http");
+var path = require("path");
+var fs = require("fs");
+
+
 // Monkey-patch json-server routes to trigger event
 var routes = require("json-server/src/routes");
 for (var route in routes) {
@@ -11,17 +16,29 @@ function wrapRoute (name, route) {
 }
 
 
-var http = require("http");
-var app = require("json-server");
-var path = require("path");
-var fs = require("fs");
+// Get current directory
+var appDir = process.env.APP_DIR || process.cwd();
+// Get execPath
+// /path/to/nw if run as "nw project.nw"
+// /tmp/.org.chromium.Chromium.RQPJgQ if run as packaged executable
+var execName = path.basename(process.execPath);
+// TODO Mac OS binary name?
+if (execName !== "nw" && execName !== "nw.exe") {
+  // Run as direct executable
+  appDir = path.dirname(process.execPath);
+}
 
-app.low.path = path.resolve("db.json");
+console.log("Working directory:", appDir);
+
+
+var app = require("json-server");
+
+app.low.path = path.resolve(appDir, "db.json");
 if (!fs.existsSync(app.low.path)) {
   fs.writeFileSync(app.low.path, "{}");
 }
 
-app.low.db = require("./db.json");
+app.low.db = require(app.low.path);
 
 var server = http.createServer(app);
 app.port = process.env.PORT || 26080;
@@ -29,7 +46,7 @@ app.port = process.env.PORT || 26080;
 server.listen(app.port);
 
 server.on("listening", function () {
-  console.log(this.address());
+  console.log("Server ready:", this.address());
 });
 
 
