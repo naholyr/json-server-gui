@@ -47,3 +47,11 @@ TODO
 
 * Better GUI
 * Persisted configuration (instead of env)
+
+How to contribute
+-----------------
+
+* Fork & clone
+* Install [node-webkit](https://github.com/rogerwang/node-webkit#downloads) for your platform (alternatively, you can run `make build-<your platform>` and grab node-webkit from `node_modules/node-webkit-builder/cache/0.10.5/<your platform>/`, saving you a duplicate download)
+* Make your changes and test them by running `/path/to/nw src`
+* Create a pull request
