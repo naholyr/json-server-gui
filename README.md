@@ -15,6 +15,8 @@ During JavaScript trainings you may want your trainees to work with a REST API (
 
 With this very simple GUI they can see the data in real time, and the requests they played. They have a direct feedback, without the need to tell them how to install a server, use a CLI, or even host your own server.
 
+![Screenshot](https://raw.githubusercontent.com/naholyr/json-server-gui/master/screenshot.png)
+
 How?
 ----
 
