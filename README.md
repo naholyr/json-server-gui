@@ -32,3 +32,18 @@ make build-linux64
 make build-windows
 make build-osx
 ```
+
+Moar!
+-----
+
+* `$APP_DIR/public` is served as document root
+* `$APP_DIR/db.json` is your data file
+* Some behavior can be defined from environment variables:
+  * `APP_DIR` = directory where we'll search for `db.json` and `public` folder (default = app's folder)
+  * `PORT` = server's port (default = 26080)
+
+TODO
+----
+
+* Better GUI
+* Persisted configuration (instead of env)
