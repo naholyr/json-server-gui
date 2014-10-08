@@ -2,9 +2,17 @@ SOURCES=src/node_modules $(shell find src -type f)
 NWDIR=./node_modules/node-webkit-builder
 NWBUILD=$(NWDIR)/bin/nwbuild.linux
 
-.PHONY: build clean
+.PHONY: build clean build-linux32 build-linux64 build-windows build-osx
 
-build: build/json-server-gui/linux32/json-server-gui build/json-server-gui/linux64/json-server-gui build/json-server-gui/win/json-server-gui.exe build/json-server-gui/osx/json-server-gui.app
+build: build-linux32 build-linux64 build-windows build-osx
+
+build-linux32: build/json-server-gui/linux32/json-server-gui
+
+build-linux64: build/json-server-gui/linux64/json-server-gui
+
+build-windows: build/json-server-gui/win/json-server-gui.exe
+
+build-osx: build/json-server-gui/osx/json-server-gui.app
 
 clean:
 	rm -rf build
