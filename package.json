@@ -1,0 +1,32 @@
+{
+    "name": "json-server-gui",
+    "version": "1.0.0",
+    "main": "index.html",
+    "description": "JSON Server",
+    "dependencies": {
+        "json-server": "0.4.2"
+    },
+    "nodejs": true,
+    "single-instance": true,
+    "webkit": {
+        "page-cache": false,
+        "java": false,
+        "plugin": false
+    },
+    "window": {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "JSON Server",
+        "always-on-top": false,
+        "frame": true,
+        "height": 480,
+        "visible": true,
+        "as_desktop": false,
+        "min_width": 640,
+        "width": 640,
+        "toolbar": false
+    },
+    "scripts": {
+      "fix-nwbuild": "cp ./node_modules/.bin/nwbuild ./node_modules/.bin/nwbuild.win && tr -d '\\015' <./node_modules/.bin/nwbuild.win >./node_modules/.bin/nwbuild"
+    }
+}
