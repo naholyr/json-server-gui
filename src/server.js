@@ -14,8 +14,13 @@ function wrapRoute (name, route) {
 var http = require("http");
 var app = require("json-server");
 var path = require("path");
+var fs = require("fs");
 
 app.low.path = path.resolve("db.json");
+if (!fs.existsSync(app.low.path)) {
+  fs.writeFileSync(app.low.path, "{}");
+}
+
 app.low.db = require("./db.json");
 
 var server = http.createServer(app);
