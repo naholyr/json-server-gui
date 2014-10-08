@@ -33,13 +33,30 @@ console.log("Working directory:", appDir);
 
 var app = require("json-server");
 
+// Override serveStatic middleware
+var serveStatic = require("json-server/node_modules/serve-static");
+var RouterLayer = require("json-server/node_modules/express/lib/router/layer");
+var indexOfMiddleware = 0;
+while (indexOfMiddleware < app._router.stack.length && app._router.stack[indexOfMiddleware].name !== "serveStatic") {
+  indexOfMiddleware++;
+}
+if (indexOfMiddleware < app._router.stack.length) {
+  app._router.stack[indexOfMiddleware] = new RouterLayer("/", {
+    "sensitive": app._router.caseSensitive,
+    "strict": false,
+    "end": false
+  }, serveStatic(path.resolve(appDir, "public")));
+  console.log("Serve static directory:", path.resolve(appDir, "public"));
+}
+
+// DB file
 app.low.path = path.resolve(appDir, "db.json");
 if (!fs.existsSync(app.low.path)) {
   fs.writeFileSync(app.low.path, "{}");
 }
-
 app.low.db = require(app.low.path);
 
+// Now the real HTTP server
 var server = http.createServer(app);
 app.port = process.env.PORT || 26080;
 
@@ -49,7 +66,7 @@ server.on("listening", function () {
   console.log("Server ready:", this.address());
 });
 
-
+// Emit on each request
 function ping (name, req) {
   if (req.method !== "GET") {
     setTimeout(function () {
