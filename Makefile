@@ -46,21 +46,21 @@ node_modules:
 	npm install
 
 build/json-server-gui/linux32/json-server-gui: $(NWBUILD) $(SOURCES)
-	@mv src/db.json db.json.bak
+	@mv src/db.json db.json.bak 2> /dev/null || echo "no db.json"
 	$(NWBUILD) -p linux32 -o build src
-	@mv db.json.bak src/db.json
+	@mv db.json.bak src/db.json 2> /dev/null || echo "no db.json"
 
 build/json-server-gui/linux64/json-server-gui: $(NWBUILD) $(SOURCES)
-	@mv src/db.json db.json.bak
+	@mv src/db.json db.json.bak 2> /dev/null || echo "no db.json"
 	$(NWBUILD) -p linux64 -o build src
-	@mv db.json.bak src/db.json
+	@mv db.json.bak src/db.json 2> /dev/null || echo "no db.json"
 
 build/json-server-gui/win/json-server-gui.exe: $(NWBUILD) $(SOURCES)
-	@mv src/db.json db.json.bak
+	@mv src/db.json db.json.bak 2> /dev/null || echo "no db.json"
 	$(NWBUILD) -p win -o build src
-	@mv db.json.bak src/db.json
+	@mv db.json.bak src/db.json 2> /dev/null || echo "no db.json"
 
 build/json-server-gui/osx/json-server-gui.app: $(NWBUILD) $(SOURCES)
-	@mv src/db.json db.json.bak
+	@mv src/db.json db.json.bak 2> /dev/null || echo "no db.json"
 	$(NWBUILD) -p osx -o build src
-	@mv db.json.bak src/db.json
+	@mv db.json.bak src/db.json 2> /dev/null || echo "no db.json"
