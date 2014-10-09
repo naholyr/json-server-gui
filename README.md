@@ -20,6 +20,17 @@ With this very simple GUI they can see the data in real time, and the requests t
 How?
 ----
 
+### Download
+
+Pre-built binaries for latest version are available here:
+
+* [Linux - 32 bits](https://dl.dropboxusercontent.com/u/6414656/json-server-gui/2.0.0/json-server-gui-linux32.tar.gz) (~40.3M)
+* [Linux - 64 bits](https://dl.dropboxusercontent.com/u/6414656/json-server-gui/2.0.0/json-server-gui-linux64.tar.gz) (~38.6M)
+* [Windows](https://dl.dropboxusercontent.com/u/6414656/json-server-gui/2.0.0/json-server-gui-win.zip) (~27.4M)
+* [Mac OSX](https://dl.dropboxusercontent.com/u/6414656/json-server-gui/2.0.0/json-server-gui-osx.zip) (~32M)
+
+### Build
+
 Clone the repository, then run `make`. The project will build for Linux (32 & 64 bits), Windows (32 bits), and Max OSX.
 
 It can last about a century first time as it will download all corresponding `node-webkit` distributions.
