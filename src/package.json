@@ -1,28 +1,26 @@
 {
     "name": "json-server-gui",
-    "version": "2.0.0",
+    "version": "3.0.2",
     "description": "JSON Server",
     "main": "index.html",
     "nodejs": true,
-    "single-instance": true,
+    "dependencies": {
+        "json-server": "latest"
+    },
     "window": {
+        "id": "json_server_gui_view",
         "title": "JSON Server",
         "fullscreen": false,
         "resizable": true,
-        "always-on-top": false,
+        "always_on_top": false,
         "frame": true,
         "height": 600,
         "min_width": 800,
-        "show_in_taskbar": true,
         "width": 800,
-        "toolbar": false
-    },
-    "dependencies": {
-        "json-server": "0.4.2"
+        "show_in_taskbar": true
     },
     "webkit": {
         "page-cache": false,
-        "java": false,
         "plugin": false
     }
 }

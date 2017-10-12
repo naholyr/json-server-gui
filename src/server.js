@@ -1,20 +1,14 @@
-var http = require("http");
-var path = require("path");
-var fs = require("fs");
+const jsonServer = require('json-server');
+const path = require('path');
+const fs = require('fs');
+const _ = require('lodash');
+const is = require('./utils/is');
+const chalk = require('chalk');
+const morgan = require("morgan");
+const server = jsonServer.create();
+const middlewares = jsonServer.defaults();
 
-
-// Monkey-patch json-server routes to trigger event
-var routes = require("json-server/src/routes");
-for (var route in routes) {
-  routes[route] = wrapRoute(route, routes[route]);
-}
-function wrapRoute (name, route) {
-  return function (req, res, next) {
-    ping(name, req);
-    route(req, res, next);
-  }
-}
-
+process.chdir(path.dirname(process.execPath));
 
 // Get current directory
 var appDir = process.env.APP_DIR || process.cwd();
@@ -28,50 +22,99 @@ if (execName !== "nw" && execName !== "nw.exe") {
   appDir = path.dirname(process.execPath);
 }
 
-console.log("Working directory:", appDir);
-
-
-var app = require("json-server");
-
-// Override serveStatic middleware
-var serveStatic = require("json-server/node_modules/serve-static");
-var RouterLayer = require("json-server/node_modules/express/lib/router/layer");
-var indexOfMiddleware = 0;
-while (indexOfMiddleware < app._router.stack.length && app._router.stack[indexOfMiddleware].name !== "serveStatic") {
-  indexOfMiddleware++;
+var configPath = path.resolve(appDir, "config/config.json");
+var configFolderPath = path.resolve(appDir, "config");
+if (!fs.existsSync(configPath))
+{
+	if (!fs.existsSync(configFolderPath))
+	{
+		fs.mkdirSync(configFolderPath);
+	}
+	fs.writeFileSync(configPath, "{}");
 }
-if (indexOfMiddleware < app._router.stack.length) {
-  app._router.stack[indexOfMiddleware] = new RouterLayer("/", {
-    "sensitive": app._router.caseSensitive,
-    "strict": false,
-    "end": false
-  }, serveStatic(path.resolve(appDir, "public")));
-  console.log("Serve static directory:", path.resolve(appDir, "public"));
+var config = JSON.parse(fs.readFileSync(configPath));
+if (config.DataPath != null)
+{
+	var rootDir = path.resolve(config.DataPath) || process.cwd();
+}
+else
+{
+	var rootDir = process.env.APP_DIR || process.cwd();
 }
 
-// DB file
-app.low.path = path.resolve(appDir, "db.json");
-if (!fs.existsSync(app.low.path)) {
-  fs.writeFileSync(app.low.path, "{}");
+
+console.log("Working directory:", rootDir);
+
+var dbPath = path.resolve(rootDir, "db.json");
+if (!fs.existsSync(dbPath))
+{
+	fs.writeFileSync(dbPath, "{}");
 }
-app.low.db = require(app.low.path);
 
-// Now the real HTTP server
-var server = http.createServer(app);
-app.port = process.env.PORT || 26080;
+var router = jsonServer.router(dbPath);
+var port = config.Port || process.env.PORT || 26080;
 
-server.listen(app.port);
+middlewares.push(morgan('dev', {
+	skip: function(req, res) { process.emit("request", req.method, req.originalUrl, req.body); return false; }
+}));
+
+server.use(middlewares);
+server.use(router);
+
+fs.watch(rootDir, (event, file) => {
+	if (file)
+	{
+		const watchedFile = path.resolve(rootDir, file);
+		if (watchedFile == path.resolve(dbPath))
+		{
+			if (is.JSON(watchedFile))
+			{
+				let obj;
+				try
+				{
+					obj = JSON.parse(fs.readFileSync(watchedFile));
+				}
+				catch (e)
+				{
+					console.log(chalk.red(`  Error reading ${watchedFile}`));
+					console.error(e.message);
+					return;
+				}
+
+				const isDatabaseDifferent = !_.isEqual(obj, router.db.getState());
+				if (isDatabaseDifferent)
+				{
+					console.log(chalk.grey(`  ${dbPath} has changed, reloading...`));
+					router.db.read();
+					process.emit("data-update");
+				}
+			}
+		}
+	}
+});
+
+server.use((req, res, next) => {
+	process.emit("request", req.method, req.originalUrl, req.body);
+	next();
+});
+
+var serverProcess;
 
 server.on("listening", function () {
   console.log("Server ready:", this.address());
 });
 
-// Emit on each request
-function ping (name, req) {
-  if (req.method !== "GET") {
-    setTimeout(function () {
-      process.emit("data-update");
-    }, 100);
-  }
-  process.emit("request", req.method, req.url, req.body);
+function stop_server()
+{
+	serverProcess && serverProcess.close();
+	conn("Server stopped");
+}
+
+function start_server()
+{
+	conn("Connecting");
+	serverProcess = server.listen(port, () => {
+		console.log("JSON Server is running");
+		conn("Online");
+	});
 }
