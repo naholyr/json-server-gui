@@ -22,7 +22,7 @@ How?
 
 ### Download
 
-Pre-built binaries for latest version are available here:
+Pre-built binaries for latest version are available here (not available):
 
 * [Linux - 32 bits](https://dl.dropboxusercontent.com/u/6414656/json-server-gui/2.0.0/json-server-gui-linux32.tar.gz) (~40.3M)
 * [Linux - 64 bits](https://dl.dropboxusercontent.com/u/6414656/json-server-gui/2.0.0/json-server-gui-linux64.tar.gz) (~38.6M)
@@ -31,7 +31,7 @@ Pre-built binaries for latest version are available here:
 
 ### Build
 
-Clone the repository, then run `make`. The project will build for Linux (32 & 64 bits), Windows (32 bits), and Max OSX.
+Clone the repository, then run `make`. The project will build for Linux (32 & 64 bits), Windows (32 & 64 bits), and Max OSX.
 
 It can last about a century first time as it will download all corresponding `node-webkit` distributions.
 
@@ -40,7 +40,8 @@ To build specific for a specific platform:
 ```sh
 make build-linux32
 make build-linux64
-make build-windows
+make build-windows32
+make build-windows64
 make build-osx
 ```
 
@@ -48,8 +49,11 @@ Moar!
 -----
 
 * `$APP_DIR/public` is served as document root
+* `$APP_DIR/config/config.json` is served as configuration file (JSON format)
+  * `DataPath` = directory where we'll search for `db.json` and `public` folder (default = app's folder)
+  * `Port` = server's port (default = 26080)
 * `$APP_DIR/db.json` is your data file
-* Some behavior can be defined from environment variables:
+* Some behavior can be defined from environment variables (if not set in the `config.json` file):
   * `APP_DIR` = directory where we'll search for `db.json` and `public` folder (default = app's folder)
   * `PORT` = server's port (default = 26080)
 
@@ -58,11 +62,20 @@ TODO
 
 * Better GUI
 * Persisted configuration (instead of env)
+* Use less tricks to pass events
 
 How to contribute
 -----------------
 
 * Fork & clone
-* Install [node-webkit](https://github.com/rogerwang/node-webkit#downloads) for your platform (alternatively, you can run `make build-<your platform>` and grab node-webkit from `node_modules/node-webkit-builder/cache/0.10.5/<your platform>/`, saving you a duplicate download)
+* Install [node-webkit](https://github.com/rogerwang/node-webkit#downloads) for your platform (alternatively, you can run `make build-<your platform>` and grab node-webkit from `node_modules/nw-builder/cache/0.10.5/<your platform>/`, saving you a duplicate download)
 * Make your changes and test them by running `/path/to/nw src`
 * Create a pull request
+
+Contributions
+-------------
+
+* Persistent configuration file
+* Auto-reload when file changes
+* Button to start and stop json-server without exiting GUI
+* Update to last version of `json-server` and `node-webkit`

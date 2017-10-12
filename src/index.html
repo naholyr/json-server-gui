@@ -3,15 +3,31 @@
   <head>
     <title>JSON Server</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript">
+    	var currentStatus = "Offline";
+
+    	function conn(status)
+    	{
+    		if (status != null)
+    		{
+        		currentStatus = status;
+    		}
+    		document.getElementById("status").innerHTML = currentStatus;
+		}
+	</script>
     <script src="server.js"></script>
   </head>
   <body>
     <div id="container">
       <pre id="data"></pre>
       <ul id="logs">
-        <li>Serveur: <strong>http://localhost:<script>document.write(app.port)</script>/</strong></li>
+        <li>Serveur: <strong>http://localhost:<script>document.write(port)</script>/</strong> | Status: <strong id="status"><script>conn("Offline")</script></strong></li>
+        <li><a href="javascript:clearcontent();">Clear logs</a> | <a href="javascript:btnSwitchServ()" id="btnServ">Stop server</a></li>
       </ul>
     </div>
     <script src="client.js"></script>
+    <script type="text/javascript">
+      start_server();
+    </script>
   </body>
 </html>

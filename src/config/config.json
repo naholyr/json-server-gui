@@ -1,0 +1,5 @@
+{
+	"Comment": "This is the default configuration :",
+	"Port": 26080,
+	"DataPath": "."
+}
