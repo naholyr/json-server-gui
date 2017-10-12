@@ -20,17 +20,21 @@ build-osx: build/osx
 
 dist: clean build
 	@rm -rf dist/$(VERSION)
-	cd build/json-server-gui && mv linux32 json-server-gui-linux32 && tar cvf json-server-gui-linux32.tar json-server-gui-linux32 && rm -rf json-server-gui-linux32
-	cd build/json-server-gui && mv linux64 json-server-gui-linux64 && tar cvf json-server-gui-linux64.tar json-server-gui-linux64 && rm -rf json-server-gui-linux64
-#	cd build/json-server-gui && mv osx     json-server-gui-osx     && zip -r   json-server-gui-osx.zip        json-server-gui-osx     && rm -rf json-server-gui-osx
+	cd build/json-server-gui && mv linux32 json-server-gui-linux32 && tar zcvf json-server-gui-linux32.tar.gz json-server-gui-linux32 && rm -rf json-server-gui-linux32
+	cd build/json-server-gui && mv linux64 json-server-gui-linux64 && tar zcvf json-server-gui-linux64.tar.gz json-server-gui-linux64 && rm -rf json-server-gui-linux64
+	cd build/json-server-gui && mv osx     json-server-gui-osx     && zip -r   json-server-gui-osx.zip        json-server-gui-osx     && rm -rf json-server-gui-osx
 	cd build/json-server-gui && mv win32   json-server-gui-win32   && zip -r   json-server-gui-win32.zip      json-server-gui-win32   && rm -rf json-server-gui-win32
 	cd build/json-server-gui && mv win64   json-server-gui-win64   && zip -r   json-server-gui-win64.zip      json-server-gui-win64   && rm -rf json-server-gui-win64
 	mkdir -p dist/$(VERSION)
-	mv build/json-server-gui/json-server-gui-linux32.tar dist/$(VERSION)/
-	mv build/json-server-gui/json-server-gui-linux64.tar dist/$(VERSION)/
-#	mv build/json-server-gui/json-server-gui-osx.zip        dist/$(VERSION)/
+	mv build/json-server-gui/json-server-gui-linux32.tar.gz dist/$(VERSION)/
+	mv build/json-server-gui/json-server-gui-linux64.tar.gz dist/$(VERSION)/
+	mv build/json-server-gui/json-server-gui-osx.zip        dist/$(VERSION)/
 	mv build/json-server-gui/json-server-gui-win32.zip      dist/$(VERSION)/
 	mv build/json-server-gui/json-server-gui-win64.zip      dist/$(VERSION)/
+
+release: dist
+	mv dist/$(VERSION) ~/Dropbox/Public/json-server-gui/
+	sed -i "s/json-server-gui\/[0-9]\+.[0-9]\+.[0-9]\+\/json-server-gui-/json-server-gui\/$(VERSION)\/json-server-gui-/g" README.md
 
 clean:
 	rm -rf build
@@ -75,4 +79,4 @@ build/osx: node_modules
 	@mv db.json.bak src/db.json 2> /dev/null || echo 
 	@touch build/osx
 
-.PHONY: build clean build-linux32 build-linux64 build-windows build-osx dist
+.PHONY: build clean build-linux32 build-linux64 build-windows build-osx dist release
