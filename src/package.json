@@ -1,6 +1,6 @@
 {
     "name": "json-server-gui",
-    "version": "10.0.0",
+    "version": "3.0.2",
     "description": "JSON Server",
     "main": "index.html",
     "nodejs": true,
